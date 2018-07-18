@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import { Button, Icon } from 'antd';
 import PostItem from './PostItem';
 import CreatePost from './CreatePost';
+import { connect } from 'react-redux';
 
-export default class Posts extends Component {
+class Posts extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -16,14 +17,14 @@ export default class Posts extends Component {
     }
 
     render(){
-        const { posts, addPost, deletePost } = this.props;
+        const { posts } = this.props;
         const lastId = posts.length > 0 ? posts[posts.length - 1].id + 1 : 0;
         return(
             <div className="posts">
                 <div className="left">
                     {
                         this.state.openCreateForm ?
-                        <CreatePost nextId={lastId} handlePost={addPost} canclePost={() => this.handleCreateForm()} />
+                        <CreatePost nextId={lastId} canclePost={() => this.handleCreateForm()} />
                         :
                         <Button onClick={this.handleCreateForm}><Icon type="file-add" /> New post</Button>
                     }
@@ -34,7 +35,7 @@ export default class Posts extends Component {
                         {
                             posts.length > 0 ? posts.map(post => {
                                 return(
-                                    <PostItem onDeletePost={deletePost} key={post.id} {...post} />
+                                    <PostItem key={post.id} {...post} />
                                 )
                             })
                             :
@@ -46,3 +47,11 @@ export default class Posts extends Component {
         )
     }
 } 
+
+const mapStateToProps = (state) => {
+    return {
+        posts: state.posts
+    }
+}
+
+export default connect(mapStateToProps)(Posts);

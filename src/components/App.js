@@ -13,7 +13,6 @@ export default class App extends Component{
     constructor(props){
         super(props);
         this.state = {
-            posts: data.posts,
             menu: 'posts'
         }
     }
@@ -24,25 +23,13 @@ export default class App extends Component{
         })
     }
 
-    addPost = (newPost) => {
-        this.setState({
-            posts: [...this.state.posts, {...newPost}]
-        })
-    }
-
-    deletePost = (id) => {
-        const posts = this.state.posts.filter(post => post.id !== id);
-        this.setState({ posts });
-    }
-
     render(){
-        const { posts = [] } = this.state;
         return(
             <div className="template">
                 <div className="content">
                     <Switch>
-                        <Route exact path="/posts" component={(props) => <Posts deletePost={this.deletePost} addPost={this.addPost} {...props} posts={posts}  />} />
-                        <Route path="/posts/:id" component={(props) => <PostFullItem {...props} posts={posts} />} />
+                        <Route exact path="/posts" component={Posts} />
+                        <Route path="/posts/:id" component={PostFullItem} />
                         <Redirect exact from="/" to="/posts" />
                     </Switch>
                 </div>

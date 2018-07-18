@@ -1,9 +1,14 @@
 import React, { Component } from 'react';
 import { Form, Icon, Input, Button, DatePicker } from 'antd';
 import moment from 'moment';
+import { create_post } from '../actions/actions';
+import { connect } from 'react-redux';
+import { bindActionCreators } from '../../../../../../.cache/typescript/2.9/node_modules/redux';
+
+
 const { TextArea } = Input;
 
-export default class CreateReact extends Component {
+class CreateReact extends Component {
     constructor(props){
         super(props);
         this.state = {
@@ -18,7 +23,7 @@ export default class CreateReact extends Component {
     onChangeInput = (e) => {
         this.setState({
             [e.target.name]: e.target.value
-        })
+        }, () => console.log(this.state))
     }
 
     handleDate = (e) => {
@@ -28,7 +33,7 @@ export default class CreateReact extends Component {
 
     submitForm = (e) => {
         e.preventDefault();
-        this.props.handlePost(this.state);
+        this.props.createPost(this.state);
     }
 
     render(){
@@ -56,3 +61,11 @@ export default class CreateReact extends Component {
         )
     }
 }
+
+const mapActionsToProps = (dispatch) => {
+    return {
+        createPost: bindActionCreators(create_post, dispatch)
+    }
+}
+
+export default connect(null, mapActionsToProps)(CreateReact);
